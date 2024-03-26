@@ -288,7 +288,11 @@
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+
+
                                 data-bs-target="#desc" type="button">Description</button>
+
+
 
                             <button class="nav-link" id="nav-speci-tab" data-bs-toggle="tab" data-bs-target="#speci"
                                 type="button">Specifications</button>
@@ -300,6 +304,8 @@
                                 data-bs-target="#question" type="button">Q & A</button>
 
                             <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab"
+
+
                                 data-bs-target="#review" type="button">Review</button>
                         </div>
                     </nav>
@@ -315,6 +321,8 @@
                             <div class="pro mb-4">
                                 <p class="font-light">The Model is wearing a white blouse from our stylist's
                                     collection, see the image for a mock-up of what the actual blouse would look
+
+
                                     like.it has text written on it in a black cursive language which looks great
                                     on a white color.</p>
                                 <div class="table-responsive">
@@ -780,6 +788,7 @@
     </div>
 </section>
 <!-- Shop Section end -->
+
 <!-- product section start -->
 <section class="ratio_asos section-b-space overflow-hidden">
     <div class="container">
