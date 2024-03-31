@@ -81,7 +81,8 @@
                                     </div>
                                     <div class="col">
                                         <h2 class="td-color">
-                                            <a href="javascript:void(0)">
+                                            <a href="javascript:void(0)"
+                                            >
                                                 <i class="fas fa-times"></i>
                                             </a>
                                         </h2>
@@ -95,73 +96,24 @@
                                 <div class="qty-box">
                                     <div class="input-group">
                                         <input type="number" name="quantity"
-                                            data-rowid="ba02b0dddb000b25445168300c65386d"
+                                            data-rowid="{{ $item->rowId }}"
+                                            onchange="updateQuantity(this)"
                                             class="form-control input-number" value="{{$item->qty}}">
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <h2 class="td-color">$18.00</h2>
+                                <h2 class="td-color">{{$item->subtotal() }}</h2>
                             </td>
                             <td>
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)"
+                                onclick="removeItemFromCart('{{$item->rowId}}')">
                                     <i class="fas fa-times"></i>
                                 </a>
                             </td>
                         </tr>
 
-                        <tr>
-                            <td>
-                                <a href="../product/details.html">
-                                    <img src="../assets/images/fashion/product/front/7.jpg" class="blur-up lazyloaded"
-                                        alt="">
-                                </a>
-                            </td>
-                            <td>
-                                <a href="../product/details.html">Et
-                                    Voluptatem Repellendus Pariatur</a>
-                                <div class="mobile-cart-content row">
-                                    <div class="col">
-                                        <div class="qty-box">
-                                            <div class="input-group">
-                                                <input type="text" name="quantity" class="form-control input-number"
-                                                    value="1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <h2>$8</h2>
-                                    </div>
-                                    <div class="col">
-                                        <h2 class="td-color">
-                                            <a href="javascript:void(0)">
-                                                <i class="fas fa-times"></i>
-                                            </a>
-                                        </h2>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <h2>$8</h2>
-                            </td>
-                            <td>
-                                <div class="qty-box">
-                                    <div class="input-group">
-                                        <input type="number" name="quantity"
-                                            data-rowid="8eb747b95b9862e9d83031beb9938720"
-                                            class="form-control input-number" value="1">
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <h2 class="td-color">$8.00</h2>
-                            </td>
-                            <td>
-                                <a href="javascript:void(0)">
-                                    <i class="fas fa-times"></i>
-                                </a>
-                            </td>
-                        </tr>
+                       
                         @endforeach
                     </tbody>
                 </table>
@@ -170,14 +122,14 @@
                 <div class="row">
                     <div class="col-sm-7 col-5 order-1">
                         <div class="left-side-button text-end d-flex d-block justify-content-end">
-                            <a href="javascript:void(0)"
+                            <a href="javascript:void(0)" onclick=" clearCart()"
                                 class="text-decoration-underline theme-color d-block text-capitalize">clear
                                 all items</a>
                         </div>
                     </div>
                     <div class="col-sm-5 col-7">
                         <div class="left-side-button float-start">
-                            <a href="../shop.html" class="btn btn-solid-default btn fw-bold mb-0 ms-0">
+                            <a href="{{ route('shop.index') }}" class="btn btn-solid-default btn fw-bold mb-0 ms-0">
                                 <i class="fas fa-arrow-left"></i> Continue Shopping</a>
                         </div>
                     </div>
@@ -237,6 +189,42 @@
     </div>
     @endif
 </section>
+<form id="updateCartQty" action="{{ route('cart.update') }}" method="POST">
+    @method('put') <!-- Change this to PUT -->
+    @csrf
 
+    <input type="hidden" id="rowId" name="rowId"/>
+    <input type="hidden" id="quantity" name="quantity"/>
+</form>
 
+<form id="deleteFromCart" action="{{route('cart.remove')}}" method="post">
+    @csrf
+    @method('delete')
+    <input type="hidden" id="rowId_D" name="rowId" />
+</form>
+<form id="clearCart" action="{{route('cart.clear')}}" method="post">
+    @csrf
+    @method('delete') 
+</form>
 @endsection
+
+@push('scripts')
+    <script>
+        function updateQuantity(qty)
+        {
+            $('#rowId').val($(qty).data('rowid'));
+            $('#quantity').val($(qty).val());
+            $('#updateCartQty').submit();
+        }      
+
+        function removeItemFromCart(rowId)
+        {
+            $('#rowId_D').val(rowId);
+            $('#deleteFromCart').submit();
+        } 
+        function clearCart()
+        {
+            $('#clearCart').submit();
+        }
+    </script>
+@endpush
