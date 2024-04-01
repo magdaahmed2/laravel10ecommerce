@@ -66,9 +66,10 @@
                                           @foreach ($brands as $brand)
                                           <li>
                                             <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" id="br{{ $brand->id }}" name="brands"
-                                                    value="{{ $brand->id }}" type="checkbox">
-                                                <label class="form-check-label">{{ $brand->name }}</label>
+                                                <input class="checkbox_animated check-it" id="br{{$brand->id}}" name="brands"
+                                                 @if(in_array($brand->id,explode(',',$q_brands))) checked="checked" @endif
+                                                  value="{{$brand->id}}" type="checkbox" onchange="filterProductsByBrand(this)">
+                                                <label class="form-check-label">{{$brand->name}}</label>
                                                 <p class="font-light">({{ $brand->products->count()}})</p>
                                             </div>
                                         </li>
@@ -201,60 +202,20 @@
                                 aria-labelledby="headingOne">
                                 <div class="accordion-body category-scroll">
                                     <ul class="category-list">
+                                       @foreach ($categories as $cat )
+                                       <li>
+                                        <div class="form-check ps-0 custome-form-check">
+                                            <input class="checkbox_animated check-it" id="ct1{{ $cat->id}}" name="categories"
+                                            @if(in_array($cat->id,explode(',',$q_categories))) checked="checked" @endif
+                                            value="{{$cat->id}}" type="checkbox" onchange="filterProductsByCategory(this)">
+                                            <label class="form-check-label">{{ $cat->name }}</label>
+                                            <p class="font-light">({{ $cat->products->count()}})</p>
+                                        </div>
+                                    </li>
+                                       @endforeach
+                                        
 
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" id="ct1" name="categories"
-                                                    type="checkbox" value="1">
-                                                <label class="form-check-label">Qui Ut</label>
-                                                <p class="font-light">(7)</p>
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" id="ct2" name="categories"
-                                                    type="checkbox" value="2">
-                                                <label class="form-check-label">Blanditiis Error</label>
-                                                <p class="font-light">(8)</p>
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" id="ct3" name="categories"
-                                                    type="checkbox" value="3">
-                                                <label class="form-check-label">Quam Quos</label>
-                                                <p class="font-light">(0)</p>
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" id="ct4" name="categories"
-                                                    type="checkbox" value="4">
-                                                <label class="form-check-label">Cupiditate Minus</label>
-                                                <p class="font-light">(5)</p>
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" id="ct5" name="categories"
-                                                    type="checkbox" value="5">
-                                                <label class="form-check-label">Dolores Et</label>
-                                                <p class="font-light">(4)</p>
-                                            </div>
-                                        </li>
-
-                                        <li>
-                                            <div class="form-check ps-0 custome-form-check">
-                                                <input class="checkbox_animated check-it" id="ct6" name="categories"
-                                                    type="checkbox" value="6">
-                                                <label class="form-check-label">Quis Repudiandae</label>
-                                                <p class="font-light">(0)</p>
-                                            </div>
-                                        </li>
+                                
                                     </ul>
                                 </div>
                             </div>
@@ -492,7 +453,9 @@
 <form id="frmFilter" method="GET">
     <input type="hidden" name="page" id="page" value="{{$page}}" />
     <input type="hidden" name="size" id="size" value="{{$size}}" />  
-    <input type="hidden" id="order" name="order" value="{{$order}}" />     
+    <input type="hidden" id="order" name="order" value="{{$order}}" />
+    <input type="hidden" id="brands" name="brands" value="{{$q_brands}}" />  
+    <input type="hidden" id="categories" name="categories" value="{{$q_categories}}" />    
 </form>
 @endsection
 
@@ -506,5 +469,35 @@
             $("#order").val($("#orderby option:selected").val());
             $("#frmFilter").submit(); 
       });
+
+      function filterProductsByBrand(brand){
+    var brands = "";
+    $("input[name='brands']:checked").each(function(){
+        if(brands=="")
+        {
+            brands += this.value;
+        }
+        else{
+            brands += "," + this.value;
+        }
+    });
+    $("#brands").val(brands);
+    $("#frmFilter").submit();
+}
+ 
+function filterProductsByCategory(cat){
+    var categories = "";
+    $("input[name='categories']:checked").each(function(){
+        if(categories=="")
+        {
+            categories += this.value;
+        }
+        else{
+            categories+= "," + this.value;
+        }
+    });
+    $("#categories").val(categories);
+    $("#frmFilter").submit();
+}
       </script>
 @endpush
